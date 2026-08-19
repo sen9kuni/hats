@@ -25,8 +25,10 @@ var addCmd = &cobra.Command{
 		}
 
 		cfg.Profiles[key] = config.Profile{
-			Name:  nameFlag,
-			Email: emailFlag,
+			User: config.User{
+				Name:  nameFlag,
+				Email: emailFlag,
+			},
 		}
 
 		if err := config.Save(cfg); err != nil {
@@ -40,8 +42,12 @@ var addCmd = &cobra.Command{
 func init() {
 	addCmd.Flags().StringVarP(&nameFlag, "name", "n", "", "Git user Name (required)")
 	addCmd.Flags().StringVarP(&emailFlag, "email", "e", "", "Git user Email (required)")
-	addCmd.MarkFlagRequired("name")
-	addCmd.MarkFlagRequired("email")
+	if err := addCmd.MarkFlagRequired("name"); err != nil {
+		panic(err)
+	}
+	if err := addCmd.MarkFlagRequired("email"); err != nil {
+		panic(err)
+	}
 
 	rootCmd.AddCommand(addCmd)
 }
