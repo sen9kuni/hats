@@ -1,3 +1,4 @@
+// Package cmd contains the application's Cobra CLI commands.
 package cmd
 
 import (

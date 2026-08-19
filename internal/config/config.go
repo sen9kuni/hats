@@ -9,8 +9,20 @@ import (
 )
 
 type Profile struct {
-	Name  string `toml:"name"`
-	Email string `toml:"email"`
+	IsMain    bool   `toml:"is_main"`
+	IncludeIf string `toml:"include_if,omitempty"`
+	User      User   `toml:"user"`
+	Core      Core   `toml:"core,omitempty"`
+}
+
+type User struct {
+	Name       string `toml:"name"`
+	Email      string `toml:"email"`
+	SigningKey string `toml:"signingkey,omitempty"`
+}
+
+type Core struct {
+	SSHCommand string `toml:"sshCommand,omitempty"`
 }
 
 type Config struct {

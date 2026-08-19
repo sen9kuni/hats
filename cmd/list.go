@@ -24,7 +24,7 @@ var listCmd = &cobra.Command{
 
 		fmt.Println("Saved Profiles:")
 		for key, profile := range cfg.Profiles {
-			fmt.Printf("- %s:\n Name: %s\n Email: %s\n", key, profile.Name, profile.Email)
+			fmt.Printf("- %s:\n Name: %s\n Email: %s\n", key, profile.User.Name, profile.User.Email)
 		}
 	},
 }
