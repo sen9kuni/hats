@@ -1,13 +1,12 @@
 package config
 
 import (
-	"encoding/json"
-	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 
+	"github.com/pelletier/go-toml/v2"
 	gUtl "github.com/sen9kuni/hats/internal/utils"
 )
 
@@ -24,13 +23,41 @@ func GetPathGitFile() (string, error) {
 	return filepath.Join(configDir, gUtl.GitFileName), nil
 }
 
-func ScanGitFile(nameProfile string, pathProfile string) (*GitConfig, error) {
+func GetListGitConfig() (*GitConfig, error) {
 	cfg := &GitConfig{Profiles: make(map[string]map[string]map[string]string)}
+	mainConfig, err := ScannerGit("")
+	if err != nil {
+		return nil, err
+	}
+	cfg.Profiles["main"] = mainConfig
+
+	if len(cfg.Profiles) > 0 && cfg.Profiles["main"] != nil && cfg.Profiles["main"]["includeif"] != nil && len(cfg.Profiles["main"]["includeif"]) > 0 {
+		for KeyIncludeif, PIncludeif := range cfg.Profiles["main"]["includeif"] {
+			newCfg, err := ScannerGit(PIncludeif)
+			if err != nil {
+				return nil, err
+			}
+			cfg.Profiles[KeyIncludeif] = newCfg
+		}
+	}
+	return cfg, nil
+}
+
+func ScannerGit(pathConfig string) (map[string]map[string]string, error) {
+	result := make(map[string]map[string]string)
 	var cmd *exec.Cmd
-	profileName := "main"
-	if len(nameProfile) > 0 && len(pathProfile) > 0 {
-		cmd = exec.Command("git", "config", "--file", pathProfile, "--list")
-		profileName = nameProfile
+	if len(pathConfig) > 0 {
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			return nil, err
+		}
+
+		if strings.HasPrefix(pathConfig, "~/") {
+			pathConfig = filepath.Join(homeDir, pathConfig[2:])
+		} else if pathConfig == "~" {
+			pathConfig = homeDir
+		}
+		cmd = exec.Command("git", "config", "--file", pathConfig, "--list")
 	} else {
 		cmd = exec.Command("git", "config", "--global", "--list")
 	}
@@ -40,7 +67,7 @@ func ScanGitFile(nameProfile string, pathProfile string) (*GitConfig, error) {
 		return nil, err
 	}
 
-	for _, line := range strings.Split(string(output), "\n") {
+	for line := range strings.SplitSeq(string(output), "\n") {
 		if line == "" {
 			continue
 		}
@@ -62,27 +89,33 @@ func ScanGitFile(nameProfile string, pathProfile string) (*GitConfig, error) {
 			subKey = keyParts[1]
 		}
 
-		if cfg.Profiles[profileName] == nil {
-			cfg.Profiles[profileName] = make(map[string]map[string]string)
+		if result[mainKey] == nil {
+			result[mainKey] = make(map[string]string)
 		}
 
-		if cfg.Profiles[profileName][mainKey] == nil {
-			cfg.Profiles[profileName][mainKey] = make(map[string]string)
-		}
-
-		cfg.Profiles[profileName][mainKey][subKey] = value
+		result[mainKey][subKey] = value
 	}
 
-	if len(cfg.Profiles) > 0 && cfg.Profiles[profileName] != nil && cfg.Profiles["main"]["includeif"] != nil && len(cfg.Profiles["main"]["includeif"]) > 0 {
-		// TODO: make recrusive for includeif
-		fmt.Println("includeif have more than 0")
-	}
-	// fmt.Println(cfg)
-	data := &cfg
+	return result, nil
+}
 
-	b, _ := json.MarshalIndent(*data, "", " ")
-	fmt.Println(string(b))
-	return cfg, nil
+func SyncToConfig(cfg *GitConfig) error {
+	path, err := GetPath()
+	if err != nil {
+		return err
+	}
+
+	err = os.MkdirAll(filepath.Dir(path), 0o755)
+	if err != nil {
+		return err
+	}
+
+	data, err := toml.Marshal(cfg)
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile(path, data, 0o644)
 }
 
 func ApplyConfig() error {
