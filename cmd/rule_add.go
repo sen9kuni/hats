@@ -31,14 +31,16 @@ var ruleAddCmd = &cobra.Command{
 			return fmt.Errorf("profile '%s' does not exists", profileID)
 		}
 
-		clearnPath := filepath.Clean(rawPath)
-		if !strings.HasSuffix(clearnPath, "/") {
-			clearnPath += "/"
+		cleanPath := filepath.Clean(rawPath)
+		if !strings.HasSuffix(cleanPath, "/") {
+			cleanPath += "/"
 		}
+
+		cleanPath = engine.FormatToTilde(cleanPath)
 
 		ruleUpdated := false
 		for i, rule := range cfg.Rules {
-			if rule.Path == clearnPath {
+			if rule.Path == cleanPath {
 				cfg.Rules[i].Profile = profileID
 				ruleUpdated = true
 				break
@@ -48,7 +50,7 @@ var ruleAddCmd = &cobra.Command{
 		if !ruleUpdated {
 			cfg.Rules = append(cfg.Rules, config.Rule{
 				Profile: profileID,
-				Path:    clearnPath,
+				Path:    cleanPath,
 			})
 		}
 
@@ -60,7 +62,7 @@ var ruleAddCmd = &cobra.Command{
 			return fmt.Errorf("rule saved, but failed to apply to git: %w", err)
 		}
 
-		fmt.Printf("Rule added: %s -> %s\n", clearnPath, profileID)
+		fmt.Printf("Rule added: %s -> %s\n", cleanPath, profileID)
 		return nil
 	},
 }

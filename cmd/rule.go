@@ -8,5 +8,5 @@ var ruleCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(ruleCmd)
+	RootCmd.AddCommand(ruleCmd)
 }

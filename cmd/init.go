@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/sen9kuni/hats/internal/config"
 	"github.com/sen9kuni/hats/internal/git"
 	"github.com/spf13/cobra"
 )
@@ -11,7 +12,8 @@ var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "append out hook config to main git config",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if err := git.EnsureHookExists("~/.config/hats/managed_includes.gitconfig"); err != nil {
+		expectedPath := fmt.Sprintf("~/.config/hats/%s", config.IncludesFileName)
+		if err := git.EnsureHookExists(expectedPath); err != nil {
 			return err
 		}
 
@@ -21,5 +23,5 @@ var initCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(initCmd)
+	RootCmd.AddCommand(initCmd)
 }

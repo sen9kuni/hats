@@ -8,5 +8,5 @@ var profileCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(profileCmd)
+	RootCmd.AddCommand(profileCmd)
 }
