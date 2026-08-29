@@ -11,8 +11,8 @@ import (
 func Sync(cfg *config.Config, hatsDir string) error {
 	profileActiveDir := filepath.Join(hatsDir, "profiles")
 	profileTmpDir := filepath.Join(hatsDir, "profiles_tmp")
-	includesActiveFile := filepath.Join(hatsDir, "managed_includes.config")
-	includesTmpFile := filepath.Join(hatsDir, "managed_includes_tmp.config")
+	includesActiveFile := filepath.Join(hatsDir, config.IncludesFileName)
+	includesTmpFile := filepath.Join(hatsDir, config.IncludesFileNameTemp)
 
 	if err := os.RemoveAll(profileTmpDir); err != nil {
 		return fmt.Errorf("failed to remove temp profiles: %w", err)

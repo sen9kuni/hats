@@ -3,12 +3,27 @@ package engine
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 
 	"github.com/sen9kuni/hats/internal/config"
 )
+
+func FormatToTilde(rawPath string) string {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return rawPath // fallback if we can't find home
+	}
+
+	// If the path starts with /Users/yourname, replace that part with ~
+	if strings.HasPrefix(rawPath, home) {
+		return strings.Replace(rawPath, home, "~", 1)
+	}
+
+	return rawPath
+}
 
 func GenerateProfileConfig(p config.Profile) string {
 	var sb strings.Builder
@@ -41,6 +56,7 @@ func GenerateIncludesConfig(rules []config.Rule, profileDir string) string {
 			gitdir += "/"
 		}
 
+		profileDir = FormatToTilde(profileDir)
 		profileFilePath := filepath.Join(profileDir, rule.Profile+".gitconfig")
 
 		fmt.Fprintf(&sb, "[includeIf \"gitdir/i:%s\"]\n", gitdir)
