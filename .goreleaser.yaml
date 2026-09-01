@@ -11,6 +11,7 @@ builds:
       - amd64
       - arm64
     main: ./main.go
+    # Inside .goreleaser.yaml
     ldflags:
       - -s -w -X 'github.com/sen9kuni/hats/cmd.Version={{.Version}}'
 
