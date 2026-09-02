@@ -13,7 +13,10 @@ builds:
     main: ./main.go
     # Inside .goreleaser.yaml
     ldflags:
-      - -s -w -X 'github.com/sen9kuni/hats/cmd.Version={{.Version}}'
+      - -s -w
+      - -X 'github.com/sen9kuni/hats/cmd.Version={{.Version}}'
+      - -X 'github.com/sen9kuni/hats/cmd.Commit={{.Commit}}'
+      - -X 'github.com/sen9kuni/hats/cmd.Date={{.Date}}'
 
 archives:
   - format: tar.gz

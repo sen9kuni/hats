@@ -19,10 +19,10 @@ Hats is actively maintained and being develop in phases. Here is the current sta
 
 ### Next features (coming soon)
 
-- [ ] Active identity detection `hats current`: instantly verify which profile is active being applied to your current working directory.
-- [ ] Commit signing support: pass `signingKey` and `commit.gpgsign` values through to profiles for developers using SSH and GPG commit signing.
+- [x] Active identity detection `hats current`: instantly verify which profile is active being applied to your current working directory.
+- [x] Commit signing support: pass `signingKey` and `commit.gpgsign` values through to profiles for developers using SSH and GPG commit signing.
 - [ ] Version command: view current install CLI version (injected via GoReleaser).
-- [ ] CLI autocompletion: tab completion for Bash, Zsh, and Fish shells.
+- [x] CLI autocompletion: tab completion for Bash, Zsh, and Fish shells.
 
 ### Good to have (backlog)
 
@@ -32,3 +32,56 @@ Hats is actively maintained and being develop in phases. Here is the current sta
 - [ ] windows support: full path normalization and support for windows filesystem (`C:\` vs `/`).
 - [ ] Homebrew tap: 1-click installation and update for macOS/Linux users via `brew install sen9kuni/tap/hats`
 - [ ] Terminal UI (TUI) Mode: a rich, Interactive, full-screen terminal interface (e.g, using Bubble Tea) for managing profiles and rules.
+
+## ⌨️ Autocompletion
+
+Hats supports autocompletion for Bash, Zsh, and Fish shells.
+
+### Bash
+
+**Temporary (current session):**
+
+```bash
+source <(hats completion bash)
+```
+
+**Permanent (Linux):**
+
+```bash
+hats completion bash | sudo tee /etc/bash_completion.d/hats > /dev/null
+```
+
+**Permanent (macOS):**
+
+```bash
+hats completion bash > $(brew --prefix)/etc/bash_completion.d/hats
+```
+
+### Zsh
+
+**Temporary (current session):**
+
+```bash
+source <(hats completion zsh)
+```
+
+**Permanent:**
+If shell completion is not already enabled in your environment, you will need to enable it by executing `echo "autoload -U compinit; compinit" >> ~/.zshrc`. Then run:
+
+```bash
+hats completion zsh > "${fpath[1]}/_hats"
+```
+
+### Fish
+
+**Temporary (current session):**
+
+```bash
+hats completion fish | source
+```
+
+**Permanent:**
+
+```bash
+hats completion fish > ~/.config/fish/completions/hats.fish
+```
