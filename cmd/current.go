@@ -37,7 +37,7 @@ var currentCmd = &cobra.Command{
 		} else {
 			fmt.Printf("	Active Identity: Global Default\n")
 			fmt.Printf("	Email: %s\n", activeEmail)
-			fmt.Printf("	(This email does not match any managed Hats Profile)")
+			fmt.Printf("	(This email does not match any managed Hats Profile)\n")
 		}
 		return nil
 	},
