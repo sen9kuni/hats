@@ -21,7 +21,7 @@ Hats is actively maintained and being develop in phases. Here is the current sta
 
 - [x] Active identity detection `hats current`: instantly verify which profile is active being applied to your current working directory.
 - [x] Commit signing support: pass `signingKey` and `commit.gpgsign` values through to profiles for developers using SSH and GPG commit signing.
-- [ ] Version command: view current install CLI version (injected via GoReleaser).
+- [x] Version command: view current install CLI version (injected via GoReleaser).
 - [x] CLI autocompletion: tab completion for Bash, Zsh, and Fish shells.
 
 ### Good to have (backlog)
