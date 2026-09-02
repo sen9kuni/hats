@@ -8,11 +8,15 @@ import (
 
 var (
 	Version    = "dev"
+	Commit     = "none"
+	Date       = "unknown"
 	versionCmd = &cobra.Command{
 		Use:   "version",
 		Short: "Print the CLI version",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("hats version %s\n", Version)
+			fmt.Printf("Hats v%s\n", Version)
+			fmt.Printf("Commit: %s\n", Commit)
+			fmt.Printf("Built: %s\n", Date)
 		},
 	}
 )

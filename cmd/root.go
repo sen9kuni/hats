@@ -8,9 +8,8 @@ import (
 )
 
 var RootCmd = &cobra.Command{
-	Use:               "Hats",
-	Short:             "A Git profile manager",
-	CompletionOptions: cobra.CompletionOptions{DisableDefaultCmd: true},
+	Use:   "Hats",
+	Short: "A Git profile manager",
 }
 
 func Execute() {
