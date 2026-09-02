@@ -137,6 +137,6 @@ Hats is actively maintained and being developed in phases.
 - [ ] **Homebrew Tap**: 1-click installation via `brew install`.
 - [ ] **Windows Support**: Full path normalization for Windows filesystems.
 
-## 📄 License
+## License
 
 MIT License
