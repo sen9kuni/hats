@@ -7,14 +7,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var rootCmd = &cobra.Command{
-	Use:               "Hats",
-	Short:             "A Git profile manager",
-	CompletionOptions: cobra.CompletionOptions{DisableDefaultCmd: true},
+var RootCmd = &cobra.Command{
+	Use:   "Hats",
+	Short: "A Git profile manager",
 }
 
 func Execute() {
-	if err := rootCmd.Execute(); err != nil {
+	if err := RootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
 }

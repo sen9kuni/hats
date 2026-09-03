@@ -1,3 +1,4 @@
+// Package config for handle Reads/writes ~/.config/hats/hats.toml
 package config
 
 import (
@@ -5,53 +6,41 @@ import (
 	"path/filepath"
 
 	"github.com/pelletier/go-toml/v2"
-	gUtl "github.com/sen9kuni/hats/internal/utils"
 )
 
-type Profile struct {
-	IsMain    bool   `toml:"is_main"`
-	IncludeIf string `toml:"include_if,omitempty"`
-	User      User   `toml:"user"`
-	Core      Core   `toml:"core,omitempty"`
-}
-
-type User struct {
-	Name       string `toml:"name"`
-	Email      string `toml:"email"`
-	SigningKey string `toml:"signingkey,omitempty"`
-}
-
-type Core struct {
-	SSHCommand string `toml:"sshCommand,omitempty"`
-}
-
-type Config struct {
-	Profiles map[string]Profile `toml:"profiles"`
-}
-
 func GetPath() (string, error) {
-	configDir, err := os.UserConfigDir()
+	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
 
-	return filepath.Join(configDir, gUtl.AppName, gUtl.ConfigFileName), nil
+	return filepath.Join(homeDir, ".config", "hats"), nil
+}
+
+func GenerateConfigFile() error {
+	cfg := &Config{
+		Profiles: make(map[string]Profile),
+		Rules:    make([]Rule, 0),
+	}
+	return Save(cfg)
 }
 
 func Load() (*Config, error) {
-	cfg := &Config{Profiles: make(map[string]Profile)}
+	cfg := &Config{
+		Profiles: make(map[string]Profile),
+		Rules:    make([]Rule, 0),
+	}
 
 	path, err := GetPath()
 	if err != nil {
 		return nil, err
 	}
-
+	path = filepath.Join(path, "hats.toml")
 	data, err := os.ReadFile(path)
 	if os.IsNotExist(err) {
-		if err := Save(cfg); err != nil {
+		if err := GenerateConfigFile(); err != nil {
 			return nil, err
 		}
-
 		return cfg, nil
 	} else if err != nil {
 		return nil, err
@@ -66,6 +55,10 @@ func Load() (*Config, error) {
 		cfg.Profiles = make(map[string]Profile)
 	}
 
+	if cfg.Rules == nil {
+		cfg.Rules = make([]Rule, 0)
+	}
+
 	return cfg, nil
 }
 
@@ -74,6 +67,7 @@ func Save(cfg *Config) error {
 	if err != nil {
 		return err
 	}
+	path = filepath.Join(path, "hats.toml")
 
 	err = os.MkdirAll(filepath.Dir(path), 0o755)
 	if err != nil {
@@ -84,6 +78,5 @@ func Save(cfg *Config) error {
 	if err != nil {
 		return err
 	}
-
 	return os.WriteFile(path, data, 0o644)
 }
