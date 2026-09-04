@@ -36,6 +36,11 @@ func Sync(cfg *config.Config, hatsDir string) error {
 		return fmt.Errorf("failed to write includes: %w", err)
 	}
 
+	includesRemoteContent := GenerateIncludesRemoteConfig(cfg.RemoteRules, profileActiveDir)
+	if err := os.WriteFile(includesRemoteContent, []byte(includesContent), 0o644); err != nil {
+		return fmt.Errorf("failed to write remotes: %w", err)
+	}
+
 	if err := os.RemoveAll(profileActiveDir); err != nil {
 		return fmt.Errorf("failed to remove active profiles: %w", err)
 	}
