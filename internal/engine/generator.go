@@ -65,3 +65,16 @@ func GenerateIncludesConfig(rules []config.Rule, profileDir string) string {
 
 	return sb.String()
 }
+
+func GenerateIncludesRemoteConfig(remotes []config.Remote, profileDir string) string {
+	var sb strings.Builder
+
+	for _, remote := range remotes {
+		profileDir = FormatToTilde(profileDir)
+		profileFilePath := filepath.Join(profileDir, remote.Profile+".gitconfig")
+
+		fmt.Fprintf(&sb, "[includeIf \"hasconfig:remote.*.url:%s\"]\n", remote.URL)
+		fmt.Fprintf(&sb, "\tpath = %s\n\n", profileFilePath)
+	}
+	return sb.String()
+}
