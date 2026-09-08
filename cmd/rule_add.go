@@ -62,7 +62,11 @@ var ruleAddCmd = &cobra.Command{
 			return fmt.Errorf("rule saved, but failed to apply to git: %w", err)
 		}
 
-		fmt.Printf("Rule added: %s -> %s\n", cleanPath, profileID)
+		if ruleUpdated {
+			fmt.Printf("Updated rule: %s now uses profile '%s'\n", cleanPath, profileID)
+		} else {
+			fmt.Printf("Rule added: %s -> %s\n", cleanPath, profileID)
+		}
 		return nil
 	},
 }

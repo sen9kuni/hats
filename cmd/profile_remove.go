@@ -49,7 +49,7 @@ var profileRemoveCmd = &cobra.Command{
 			return fmt.Errorf("profile deleted, but failed to update to git: %w", err)
 		}
 
-		fmt.Printf("Removeed profile: %s\n", profileID)
+		fmt.Printf("Removed profile: %s\n", profileID)
 		return nil
 	},
 }

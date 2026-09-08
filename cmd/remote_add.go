@@ -32,16 +32,21 @@ var remoteAddCmd = &cobra.Command{
 			return fmt.Errorf("profile '%s' does not exist", profileID)
 		}
 
-		for _, r := range cfg.RemoteRules {
+		remoteUpdated := false
+		for i, r := range cfg.RemoteRules {
 			if r.URL == urlPattern {
-				return fmt.Errorf("remote rule for '%s' already exists", urlPattern)
+				cfg.RemoteRules[i].Profile = profileID
+				remoteUpdated = true
+				break
 			}
 		}
 
-		cfg.RemoteRules = append(cfg.RemoteRules, config.Remote{
-			URL:     urlPattern,
-			Profile: profileID,
-		})
+		if !remoteUpdated {
+			cfg.RemoteRules = append(cfg.RemoteRules, config.Remote{
+				URL:     urlPattern,
+				Profile: profileID,
+			})
+		}
 
 		if err := config.Save(cfg); err != nil {
 			return err
@@ -51,7 +56,11 @@ var remoteAddCmd = &cobra.Command{
 			return fmt.Errorf("remote saved, but failed to apply to git: %w", err)
 		}
 
-		fmt.Printf("Mapped remote URL '%s' to profile '%s'\n", urlPattern, profileID)
+		if remoteUpdated {
+			fmt.Printf("Updated remote: %s now uses profile '%s'\n", urlPattern, profileID)
+		} else {
+			fmt.Printf("Mapped remote URL '%s' to profile '%s'\n", urlPattern, profileID)
+		}
 		return nil
 	},
 }
