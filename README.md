@@ -130,10 +130,10 @@ Hats is actively maintained and being developed in phases.
 
 ### Backlog
 
-- [ ] **Health Check (`hats doctor`)**: A diagnostic command to detect broken symlinks, syntax errors, or missing config shards.
+- [x] **Health Check (`hats doctor`)**: A diagnostic command to detect broken symlinks, syntax errors, or missing config shards.
 - [ ] **Terminal UI (TUI) Mode**: A rich, interactive terminal interface for managing profiles visually.
 - [ ] **Interactive Mode**: Guided terminal prompts for creating profiles (no flags required).
-- [ ] **Remote URL Matching**: Apply profiles based on the Git remote URL instead of the local path.
+- [x] **Remote URL Matching**: Apply profiles based on the Git remote URL instead of the local path.
 - [ ] **Homebrew Tap**: 1-click installation via `brew install`.
 - [ ] **Windows Support**: Full path normalization for Windows filesystems.
 
