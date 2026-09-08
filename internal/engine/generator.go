@@ -36,9 +36,15 @@ func GenerateProfileConfig(p config.Profile) string {
 	// check if the signing have value
 	if p.SigningKey != "" {
 		fmt.Fprintf(&sb, "\tsigningKey = %s\n", p.SigningKey)
-		fmt.Fprintf(&sb, "[commit]\n")
+		fmt.Fprintf(&sb, "\n[commit]\n")
 		fmt.Fprintf(&sb, "\tgpgsign = true\n")
 	}
+
+	if p.SSHKey != "" {
+		fmt.Fprintf(&sb, "\n[core]\n")
+		fmt.Fprintf(&sb, "\tsshCommand = ssh -i %s -F /dev/null\n", p.SSHKey)
+	}
+
 	return sb.String()
 }
 
