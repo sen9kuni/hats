@@ -130,6 +130,7 @@ Hats is actively maintained and being developed in phases.
 - [x] **Health Check (`hats doctor`)**: A diagnostic command to detect broken symlinks, syntax errors, or missing config shards.
 - [x] **Remote URL Matching**: Apply profiles based on the Git remote URL instead of the local path.
 - [x] **Update Command**: Update Git profile, update feature on add command for rule and remote.
+- [x] **SSH Key**: add SSH Key on model Git profile.
 
 ### Backlog
 
