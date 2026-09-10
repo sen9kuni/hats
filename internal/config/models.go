@@ -10,6 +10,7 @@ type Profile struct {
 	Name       string `toml:"name"`
 	Email      string `toml:"email"`
 	SigningKey string `toml:"signing_key,omitempty"`
+	SSHKey     string `toml:"ssh_key,omitempty"`
 }
 
 type Rule struct {

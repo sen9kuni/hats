@@ -8,9 +8,10 @@ import (
 )
 
 var (
-	profileName  string
-	profileEmail string
-	profileKey   string
+	profileName   string
+	profileEmail  string
+	profileKey    string
+	profileSSHKey string
 )
 
 var profileAddCmd = &cobra.Command{
@@ -33,6 +34,7 @@ var profileAddCmd = &cobra.Command{
 			Name:       profileName,
 			Email:      profileEmail,
 			SigningKey: profileKey,
+			SSHKey:     profileSSHKey,
 		}
 
 		if err := config.Save(cfg); err != nil {
@@ -48,6 +50,7 @@ func init() {
 	profileAddCmd.Flags().StringVarP(&profileName, "name", "n", "", "Git user.name (required)")
 	profileAddCmd.Flags().StringVarP(&profileEmail, "email", "e", "", "Git user.email (required)")
 	profileAddCmd.Flags().StringVarP(&profileName, "signing-key", "k", "", "Git user.SigningKey (optional)")
+	profileAddCmd.Flags().StringVarP(&profileSSHKey, "ssh-key", "s", "", "Git path SSH private key (optional, e.g, ~/.ssh/id_ed25519_freelance_a)")
 
 	profileAddCmd.MarkFlagRequired("name")
 	profileAddCmd.MarkFlagRequired("email")

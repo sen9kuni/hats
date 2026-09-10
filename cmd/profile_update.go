@@ -12,6 +12,7 @@ var (
 	updateProfileName       string
 	updateProfileEmail      string
 	updateProfileSigningKey string
+	updateProfileSSHKey     string
 )
 
 var profileUpdateCmd = &cobra.Command{
@@ -51,6 +52,10 @@ var profileUpdateCmd = &cobra.Command{
 			profile.SigningKey = updateProfileSigningKey
 			updated = true
 		}
+		if cmd.Flags().Changed("ssh-key") {
+			profile.SSHKey = updateProfileSSHKey
+			updated = true
+		}
 
 		if !updated {
 			fmt.Println("No updated flags provided. Profile remain unchanged.")
@@ -79,4 +84,5 @@ func init() {
 	profileUpdateCmd.Flags().StringVarP(&updateProfileName, "name", "n", "", "Update Git user.name")
 	profileUpdateCmd.Flags().StringVarP(&updateProfileEmail, "email", "e", "", "Update Git user.email")
 	profileUpdateCmd.Flags().StringVarP(&updateProfileSigningKey, "signing-key", "k", "", "Update Git user.signingKey")
+	profileUpdateCmd.Flags().StringVarP(&updateProfileSSHKey, "ssh-key", "s", "", "Update Path to SSH key Git")
 }
