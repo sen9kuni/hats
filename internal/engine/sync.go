@@ -32,13 +32,24 @@ func Sync(cfg *config.Config, hatsDir string) error {
 	}
 
 	includesContent := GenerateIncludesConfig(cfg.Rules, profileActiveDir)
-	if err := os.WriteFile(includesTmpFile, []byte(includesContent), 0o644); err != nil {
-		return fmt.Errorf("failed to write includes: %w", err)
-	}
 
 	includesRemoteContent := GenerateIncludesRemoteConfig(cfg.RemoteRules, profileActiveDir)
-	if err := os.WriteFile(includesRemoteContent, []byte(includesContent), 0o644); err != nil {
-		return fmt.Errorf("failed to write remotes: %w", err)
+
+	var content string
+
+	switch {
+	case includesContent != "" && includesRemoteContent != "":
+		content = includesContent + "\n" + includesRemoteContent
+	case includesContent != "":
+		content = includesContent
+	case includesRemoteContent != "":
+		content = includesRemoteContent
+	default:
+		content = ""
+	}
+
+	if err := os.WriteFile(includesTmpFile, []byte(content), 0o644); err != nil {
+		return fmt.Errorf("failed to write management config: %w", err)
 	}
 
 	if err := os.RemoveAll(profileActiveDir); err != nil {
