@@ -49,7 +49,7 @@ var remoteRemoveCmd = &cobra.Command{
 			return fmt.Errorf("remote deleted, but failed to apply to git: %w", err)
 		}
 
-		fmt.Printf("removed remote for: %s\n", urlPattern)
+		fmt.Printf("removed remote for URL: %s\n", urlPattern)
 
 		return nil
 	},

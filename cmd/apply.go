@@ -8,7 +8,7 @@ import (
 
 var applyCmd = &cobra.Command{
 	Use:   "apply",
-	Short: "generate file config profiles",
+	Short: "Apply profiles to git config files",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		hatsDir, err := config.GetPath()
 		if err != nil {

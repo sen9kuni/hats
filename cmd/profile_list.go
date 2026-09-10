@@ -11,7 +11,7 @@ import (
 
 var profileListCmd = &cobra.Command{
 	Use:   "list",
-	Short: "get list profle",
+	Short: "List all Git profiles",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg, err := config.Load()
 		if err != nil {

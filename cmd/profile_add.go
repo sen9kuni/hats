@@ -16,7 +16,7 @@ var (
 
 var profileAddCmd = &cobra.Command{
 	Use:   "add [profile-name]",
-	Short: "Add or update a Git Profile",
+	Short: "Add a Git Profile",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		profileID := args[0]
@@ -49,7 +49,7 @@ var profileAddCmd = &cobra.Command{
 func init() {
 	profileAddCmd.Flags().StringVarP(&profileName, "name", "n", "", "Git user.name (required)")
 	profileAddCmd.Flags().StringVarP(&profileEmail, "email", "e", "", "Git user.email (required)")
-	profileAddCmd.Flags().StringVarP(&profileName, "signing-key", "k", "", "Git user.SigningKey (optional)")
+	profileAddCmd.Flags().StringVarP(&profileKey, "signing-key", "k", "", "Git user.SigningKey (optional)")
 	profileAddCmd.Flags().StringVarP(&profileSSHKey, "ssh-key", "s", "", "Git path SSH private key (optional, e.g, ~/.ssh/id_ed25519_freelance_a)")
 
 	profileAddCmd.MarkFlagRequired("name")

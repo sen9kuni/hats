@@ -10,7 +10,7 @@ import (
 
 var currentCmd = &cobra.Command{
 	Use:   "current",
-	Short: "show the active Git profile for the current directory",
+	Short: "Show the active Git profile for the current directory",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		activeEmail := git.GetValue("user.email")
 

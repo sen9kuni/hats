@@ -11,7 +11,7 @@ import (
 
 var remoteListCmd = &cobra.Command{
 	Use:   "list",
-	Short: "get list remote",
+	Short: "List remote URL rules",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg, err := config.Load()
 		if err != nil {

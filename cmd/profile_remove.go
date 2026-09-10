@@ -10,7 +10,7 @@ import (
 
 var profileRemoveCmd = &cobra.Command{
 	Use:   "remove [profile-name]",
-	Short: "remove a git profile",
+	Short: "Remove a Git profile",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		profileID := args[0]
@@ -25,7 +25,7 @@ var profileRemoveCmd = &cobra.Command{
 		}
 
 		if _, exists := cfg.Profiles[profileID]; !exists {
-			return fmt.Errorf("profile '%s' not found", profileID)
+			return fmt.Errorf("profile '%s' does not exist", profileID)
 		}
 
 		delete(cfg.Profiles, profileID)

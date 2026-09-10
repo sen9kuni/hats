@@ -11,7 +11,7 @@ import (
 
 var ruleListCmd = &cobra.Command{
 	Use:   "list",
-	Short: "get list rule",
+	Short: "List directory rules",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg, err := config.Load()
 		if err != nil {

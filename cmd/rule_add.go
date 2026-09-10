@@ -28,7 +28,7 @@ var ruleAddCmd = &cobra.Command{
 		}
 
 		if _, exists := cfg.Profiles[profileID]; !exists {
-			return fmt.Errorf("profile '%s' does not exists", profileID)
+			return fmt.Errorf("profile '%s' does not exist", profileID)
 		}
 
 		cleanPath := filepath.Clean(rawPath)

@@ -10,7 +10,7 @@ import (
 
 var ruleRemoveCmd = &cobra.Command{
 	Use:   "remove [path-apply-rule]",
-	Short: "remove a rule",
+	Short: "Remove a directory rule",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		rawPath := args[0]
@@ -49,7 +49,7 @@ var ruleRemoveCmd = &cobra.Command{
 		if err := engine.Sync(cfg, hatsDir); err != nil {
 			return fmt.Errorf("rule deleted, but failed to apply to git: %w", err)
 		}
-		fmt.Printf("removed rule for: %s\n", targetPath)
+		fmt.Printf("removed rule for directory: %s\n", targetPath)
 		return nil
 	},
 }

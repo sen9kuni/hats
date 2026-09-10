@@ -4,7 +4,7 @@ import "github.com/spf13/cobra"
 
 var ruleCmd = &cobra.Command{
 	Use:   "rule",
-	Short: "Managing rule every Git Profile",
+	Short: "Managing directory rules for Git Profile",
 }
 
 func init() {

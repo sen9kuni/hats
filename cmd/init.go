@@ -10,14 +10,14 @@ import (
 
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "append out hook config to main git config",
+	Short: "Install the Hats include hook into global git config",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		expectedPath := fmt.Sprintf("~/.config/hats/%s", config.IncludesFileName)
 		if err := git.EnsureHookExists(expectedPath); err != nil {
 			return err
 		}
 
-		fmt.Println("sucess to append hook config")
+		fmt.Println("success to append hook config")
 		return nil
 	},
 }

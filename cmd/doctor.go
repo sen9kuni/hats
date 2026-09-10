@@ -14,7 +14,7 @@ import (
 
 var doctorCmd = &cobra.Command{
 	Use:   "doctor",
-	Short: "Check for misconfiguration and system healt",
+	Short: "Check for misconfiguration and system health",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		fmt.Println("Running Hats diagnotics...")
 
