@@ -4,11 +4,13 @@ package engine
 import (
 	"fmt"
 	"os"
+	"path"
 	"path/filepath"
 	"sort"
 	"strings"
 
 	"github.com/sen9kuni/hats/internal/config"
+	"github.com/sen9kuni/hats/internal/utils"
 )
 
 func FormatToTilde(rawPath string) string {
@@ -17,7 +19,11 @@ func FormatToTilde(rawPath string) string {
 		return rawPath // fallback if we can't find home
 	}
 
-	// If the path starts with /Users/yourname, replace that part with ~
+	// Normalize both path
+	rawPath = filepath.ToSlash(rawPath)
+	home = filepath.ToSlash(home)
+
+	// handle window: c:/users/name -> ~/
 	if strings.HasPrefix(rawPath, home) {
 		return strings.Replace(rawPath, home, "~", 1)
 	}
@@ -42,7 +48,13 @@ func GenerateProfileConfig(p config.Profile) string {
 
 	if p.SSHKey != "" {
 		fmt.Fprintf(&sb, "\n[core]\n")
-		fmt.Fprintf(&sb, "\tsshCommand = ssh -i %s -F /dev/null\n", p.SSHKey)
+		if utils.IsWindows() {
+			// NOTE: window no -F /dev/null need, git windows handle it
+			sshKey := strings.ReplaceAll(p.SSHKey, `\`, `\\`)
+			fmt.Fprintf(&sb, "\tsshCommand = ssh -i \"%s\"\n", sshKey)
+		} else {
+			fmt.Fprintf(&sb, "\tsshCommand = ssh -i %s -F /dev/null\n", p.SSHKey)
+		}
 	}
 
 	return sb.String()
@@ -63,7 +75,7 @@ func GenerateIncludesConfig(rules []config.Rule, profileDir string) string {
 		}
 
 		profileDir = FormatToTilde(profileDir)
-		profileFilePath := filepath.Join(profileDir, rule.Profile+".gitconfig")
+		profileFilePath := path.Join(profileDir, rule.Profile+".gitconfig")
 
 		fmt.Fprintf(&sb, "[includeIf \"gitdir/i:%s\"]\n", gitdir)
 		fmt.Fprintf(&sb, "\tpath = %s\n\n", profileFilePath)
@@ -77,7 +89,7 @@ func GenerateIncludesRemoteConfig(remotes []config.Remote, profileDir string) st
 
 	for _, remote := range remotes {
 		profileDir = FormatToTilde(profileDir)
-		profileFilePath := filepath.Join(profileDir, remote.Profile+".gitconfig")
+		profileFilePath := path.Join(profileDir, remote.Profile+".gitconfig")
 
 		fmt.Fprintf(&sb, "[includeIf \"hasconfig:remote.*.url:%s\"]\n", remote.URL)
 		fmt.Fprintf(&sb, "\tpath = %s\n\n", profileFilePath)

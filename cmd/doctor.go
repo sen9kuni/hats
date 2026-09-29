@@ -20,11 +20,10 @@ var doctorCmd = &cobra.Command{
 
 		hasError := false
 
-		home, err := os.UserHomeDir()
+		hatsDir, err := config.GetPath()
 		if err != nil {
-			return fmt.Errorf("could not get home directory: %w", err)
+			return fmt.Errorf("could not get config directory: %w", err)
 		}
-		hatsDir := filepath.Join(home, ".config", "hats")
 
 		// NOTE: Check Hats directory
 		if _, err := os.Stat(hatsDir); os.IsNotExist(err) {
@@ -43,6 +42,10 @@ var doctorCmd = &cobra.Command{
 			fmt.Println("[State] hats.toml parsed successfully.")
 		}
 
+		home, err := os.UserHomeDir()
+		if err != nil {
+			return err
+		}
 		// NOTE: Check global git integeration
 		globalConfigPath := filepath.Join(home, ".gitconfig")
 		content, err := os.ReadFile(globalConfigPath)

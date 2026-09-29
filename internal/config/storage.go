@@ -6,15 +6,11 @@ import (
 	"path/filepath"
 
 	"github.com/pelletier/go-toml/v2"
+	"github.com/sen9kuni/hats/internal/utils"
 )
 
 func GetPath() (string, error) {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		return "", err
-	}
-
-	return filepath.Join(homeDir, ".config", "hats"), nil
+	return utils.ConfigDir()
 }
 
 func GenerateConfigFile() error {

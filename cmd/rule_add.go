@@ -32,6 +32,7 @@ var ruleAddCmd = &cobra.Command{
 		}
 
 		cleanPath := filepath.Clean(rawPath)
+		cleanPath = filepath.ToSlash(cleanPath)
 		if !strings.HasSuffix(cleanPath, "/") {
 			cleanPath += "/"
 		}
