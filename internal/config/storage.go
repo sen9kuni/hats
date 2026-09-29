@@ -31,7 +31,7 @@ func Load() (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	path = filepath.Join(path, "hats.toml")
+	path = filepath.Join(path, StateFileName)
 	data, err := os.ReadFile(path)
 	if os.IsNotExist(err) {
 		if err := GenerateConfigFile(); err != nil {
@@ -63,7 +63,7 @@ func Save(cfg *Config) error {
 	if err != nil {
 		return err
 	}
-	path = filepath.Join(path, "hats.toml")
+	path = filepath.Join(path, StateFileName)
 
 	err = os.MkdirAll(filepath.Dir(path), 0o755)
 	if err != nil {
